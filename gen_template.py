@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python3 -B
 with open("template.txt", "w") as fp:
     txt =  ""
     txt += 64*chr(9608) + '\n'

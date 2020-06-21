@@ -37,7 +37,7 @@ def parse_template(ftempl):
     # read template and pre-process
     img_rgb = Image.open(ftempl)
     img_bin = img_rgb.convert('L')
-    img_arr = np.array(img_bin) > 50
+    img_arr = np.array(img_bin) > 40
     
     # get params
     row_start, col_start, row_win, col_win  = get_params(img_arr)
