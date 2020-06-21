@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/python3 -B
 import sys, getopt
 from PIL import Image
 import numpy as np
@@ -34,11 +34,10 @@ def get_params(img_arr):
     return [row_start, col_start, row_win, col_win]
 
 def parse_template(ftempl):
-
     # read template and pre-process
     img_rgb = Image.open(ftempl)
     img_bin = img_rgb.convert('L')
-    img_arr = np.array(img_bin) > 128
+    img_arr = np.array(img_bin) > 50
     
     # get params
     row_start, col_start, row_win, col_win  = get_params(img_arr)
@@ -51,15 +50,10 @@ def parse_template(ftempl):
         col_start_i = col_start + col_win * i
         ctempl_dict[chars[i]]   = img_arr[row_start_i : row_start_i + row_win, col_start_i : col_start_i + col_win]
 
-    img = Image.fromarray(ctempl_dict['_'])
-    img.show()
-    
-    return [row_start, col_start, row_win, col_win]
-
-
+    return [row_start, col_start, row_win, col_win, ctempl_dict]
 
 def print_usage():
-    print('./gen_params.py -i <template>')
+    print('./parse_template.py -i <template>')
 
 def main(argv):
     # Get Arguments
@@ -74,7 +68,7 @@ def main(argv):
             sys.exit()
         elif opt in ("-i"):
             fin = arg
-    row_start, col_start, row_win, col_win  = parse_template(fin)
+    row_start, col_start, row_win, col_win, ctemp1_dict = parse_template(fin)
     print("row start= %d" % row_start)
     print("col start= %d" % col_start)
     print("row win  = %d" % row_win)
