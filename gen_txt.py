@@ -30,12 +30,13 @@ def get_txt(row_start, col_start, row_win, col_win, ctempl_dict, fin):
     return txt
 
 def print_usage():
-    print('./gen_txt.py -i <file> -t <ftempl')
+    print('./gen_txt.py -i <file> -t <ftempl -c Write/Black')
 
 def main(argv):
+    char_color  = "Black"
     # Get Arguments
     try:
-        opts, args    = getopt.getopt(argv,"i:t:")
+        opts, args    = getopt.getopt(argv,"i:t:c:")
     except getopt.GetoptError:
         print_usage()
         sys.exit(2)
@@ -44,11 +45,13 @@ def main(argv):
             print_usage()
             sys.exit()
         elif opt in ("-i"):
-            fin     = arg
-            fout    = fin.split('.')[0] + '.v'
+            fin         = arg
+            fout        = fin.split('.')[0] + '.v'
         elif opt in ("-t"):
-            ftempl  = arg
-    row_start, col_start, row_win, col_win, ctempl_dict = parse_template(ftempl)
+            ftempl      = arg
+        elif opt in ("-c"):
+            char_color  = arg
+    row_start, col_start, row_win, col_win, ctempl_dict = parse_template(ftempl, char_color)
     txt = get_txt(row_start, col_start, row_win, col_win, ctempl_dict, fin)
     with open(fout, 'w') as fp:
         for line in txt:

@@ -1,9 +1,9 @@
 #!/usr/bin/python3 -B
 with open("template.txt", "w") as fp:
     txt =  ""
-    txt += 64*chr(9608) + '\n'
+    txt += 64*chr(9607) + '\n'
     for i in range(7):
-        txt += chr(9608) + '\n'
+        txt += chr(9607) + '\n'
     txt += "`1234567890-="
     txt += "~!@#$%^&*()_+"
     txt += "qwertyuiop[]\\"
