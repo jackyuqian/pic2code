@@ -4,27 +4,34 @@ from PIL import Image
 import numpy as np
 from parse_template import parse_template
 
-def get_txt(row_start, col_start, row_win, col_win, ctempl_dict, fin):
+def get_txt(row_start, col_start, row_win, col_win, ctempl_dict, fin, char_color):
     # read template and pre-process
     img_rgb = Image.open(fin)
     img_bin = img_rgb.convert('L')
-    img_arr = np.array(img_bin) > 40
+    if char_color == "Black":
+        img_arr = np.array(img_bin) < 180
+    else:
+        img_arr = np.array(img_bin) > 40
     #Image.fromarray(img_arr).show()
     txt     = []
-    matched = False
+    min_norm= 99999
     for row in range(row_start, img_arr.shape[0], row_win):
         txt.append("")
         for col in range(col_start, img_arr.shape[1], col_win):
-            matched = False
+            min_norm        = 99999
+            key_selected    = ''
             for key, val in ctempl_dict.items():
                 if img_arr[row : row + row_win, col : col + col_win].shape != val.shape:
                     break
-                elif (1.0 / (1.0 + np.linalg.norm(img_arr[row : row + row_win, col : col + col_win] ^ val))) > 0.2:
-                    txt[-1] += key
-                    matched = True
-                    break
-            if matched is False:
+                else:
+                    if np.linalg.norm(img_arr[row : row + row_win, col : col + col_win] ^ val) <= min_norm:
+                        min_norm        = np.linalg.norm(img_arr[row : row + row_win, col : col + col_win] ^ val)
+                        key_selected    = key
+
+            if min_norm > 10:
                 txt[-1] += ' '
+            else:
+                txt[-1] += key_selected
         txt[-1] = txt[-1].rstrip()
         print(txt[-1])
     return txt
@@ -52,7 +59,7 @@ def main(argv):
         elif opt in ("-c"):
             char_color  = arg
     row_start, col_start, row_win, col_win, ctempl_dict = parse_template(ftempl, char_color)
-    txt = get_txt(row_start, col_start, row_win, col_win, ctempl_dict, fin)
+    txt = get_txt(row_start, col_start, row_win, col_win, ctempl_dict, fin, char_color)
     with open(fout, 'w') as fp:
         for line in txt:
             print(line, file = fp)

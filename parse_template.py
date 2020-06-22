@@ -47,13 +47,14 @@ def find_col_location(lst_in, ele):
     return rslt
 
 def get_params(img_arr):
-    # find care colume
-    care_col    = np.argmax(np.sum(img_arr, axis = 0))
+    # find row block
+    care_col    = np.argmax(np.sum(img_arr[:,2:-2], axis = 0)) + 2
     row_start, row_length   = find_row_location(img_arr[:, care_col], True)
     row_win     = int(row_length)
 
-    # find care row 
-    col_start, col_length   = find_col_location(img_arr[row_start + row_length -1, :], True)
+    # find col block
+    col_start, col_length   = find_col_location(img_arr[row_start + row_length -1, 2:-2], True)
+    col_start   = col_start + 2
     col_win     = int(col_length / 64)
     
     return [row_start, col_start, row_win, col_win]
@@ -63,9 +64,10 @@ def parse_template(ftempl, char_color):
     img_rgb = Image.open(ftempl)
     img_bin = img_rgb.convert('L')
     if char_color == "Black":
-        img_arr = np.array(img_bin) < 40
+        img_arr = np.array(img_bin) < 180
     else:
         img_arr = np.array(img_bin) > 40
+    #Image.fromarray(img_arr).show()
     
     # get params
     row_start, col_start, row_win, col_win  = get_params(img_arr)
@@ -104,8 +106,8 @@ def main(argv):
     print("col start= %d" % col_start)
     print("row win  = %d" % row_win)
     print("col win  = %d" % col_win)
-    Image.fromarray(ctemp1_dict['A']).show()
-
+    Image.fromarray(ctemp1_dict['1']).show()
+    Image.fromarray(ctemp1_dict[']']).show()
 
 if __name__ == '__main__':
     main(sys.argv[1:])
