@@ -30,7 +30,7 @@ def get_txt(row_start, col_start, row_win, col_win, ctempl_dict, fin):
     return txt
 
 def print_usage():
-    print('./gen_txt.py -i <file>')
+    print('./gen_txt.py -i <file> -t <ftempl')
 
 def main(argv):
     # Get Arguments
