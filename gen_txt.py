@@ -33,7 +33,7 @@ def get_txt(row_start, col_start, row_win, col_win, ctempl_dict, fin, char_color
             else:
                 txt[-1] += key_selected
         txt[-1] = txt[-1].rstrip()
-        print("Doing line %d ..." % int((row - row_start) / row_win))
+        print(txt[-1])
     return txt
 
 def print_usage():
