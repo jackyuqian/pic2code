@@ -33,7 +33,7 @@ def get_txt(row_start, col_start, row_win, col_win, ctempl_dict, fin, char_color
             else:
                 txt[-1] += key_selected
         txt[-1] = txt[-1].rstrip()
-        print(txt[-1])
+        print("Doing line %d ..." % int((row - row_start) / row_win))
     return txt
 
 def print_usage():
@@ -41,9 +41,10 @@ def print_usage():
 
 def main(argv):
     char_color  = "Black"
+    fout        = ""
     # Get Arguments
     try:
-        opts, args    = getopt.getopt(argv,"i:t:c:")
+        opts, args    = getopt.getopt(argv,"i:t:c:o:")
     except getopt.GetoptError:
         print_usage()
         sys.exit(2)
@@ -53,11 +54,15 @@ def main(argv):
             sys.exit()
         elif opt in ("-i"):
             fin         = arg
-            fout        = fin.split('.')[0] + '.v'
+        elif opt in ("-o"):
+            fout        = arg
         elif opt in ("-t"):
             ftempl      = arg
         elif opt in ("-c"):
             char_color  = arg
+    if fout == "":
+            fout        = fin.split('.')[0] + '.txt`'
+
     row_start, col_start, row_win, col_win, ctempl_dict = parse_template(ftempl, char_color)
     txt = get_txt(row_start, col_start, row_win, col_win, ctempl_dict, fin, char_color)
     with open(fout, 'w') as fp:
