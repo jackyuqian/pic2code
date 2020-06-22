@@ -1,6 +1,7 @@
 # How to Use?
 0. Copy template.txt to target machine, or copy gen\_template.py to target machine and run;
 0. Use VIM open template.txt and disable line number(:set nu!);
+0. Disable syntax highlight;
 0. Change font to Liberation Mono 12;(Others will be fine)
 0. Maximize the window, screenshot;
 0. Use VIM open source codes, maximize the windows and screenshot;
